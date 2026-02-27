@@ -9,90 +9,106 @@
 
 <style>
 :root{
-    --cor-principal:#0f5c74;
-    --cor-secundaria:#1f6f8b;
-    --cor-sucesso:#28a745;
-    --cor-bg:#f4f6f9;
+    --azul-principal:#0f5c74;
+    --azul-sec:#1f6f8b;
+    --verde:#28a745;
+    --cinza-bg:#eef2f5;
 }
 
 body{
     font-family:'Segoe UI', Arial, sans-serif;
     margin:0;
-    padding:20px;
-    background:var(--cor-bg);
+    background:linear-gradient(135deg,#0f5c74,#1f6f8b);
 }
 
 .container{
     max-width:1100px;
-    margin:auto;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
 h1{
-    background:var(--cor-principal);
-    color:#fff;
-    padding:15px;
-    border-radius:10px;
+    text-align:center;
+    color:var(--azul-principal);
+    margin-bottom:10px;
 }
 
 .subinfo{
-    margin:20px 0;
-    font-size:15px;
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
 }
 
-.buttons{
-    margin-bottom:15px;
+.actions{
+    text-align:center;
+    margin-bottom:20px;
 }
 
 button{
-    padding:8px 15px;
+    padding:10px 18px;
     border:none;
-    border-radius:6px;
+    border-radius:8px;
     cursor:pointer;
-    margin-right:5px;
-    font-weight:500;
+    font-weight:600;
+    margin:5px;
+    transition:0.3s;
 }
 
-.salvar{ background:#007bff; color:white;}
-.nova{ background:#28a745; color:white;}
-button:hover{opacity:0.9;}
+.salvar{
+    background:var(--azul-principal);
+    color:white;
+}
+
+.nova{
+    background:var(--verde);
+    color:white;
+}
+
+button:hover{
+    transform:scale(1.05);
+    opacity:0.9;
+}
 
 table{
     width:100%;
     border-collapse:collapse;
-    background:white;
-    border-radius:8px;
-    overflow:hidden;
+    margin-top:10px;
 }
 
 th{
-    background:var(--cor-secundaria);
+    background:var(--azul-sec);
     color:white;
-    padding:8px;
+    padding:10px;
 }
 
 td{
-    padding:8px;
+    padding:10px;
     border-bottom:1px solid #eee;
 }
 
 td[contenteditable]:focus{
-    outline:2px solid var(--cor-secundaria);
+    outline:2px solid var(--azul-sec);
+    background:#f0f8ff;
 }
 
-tr:nth-child(even){background:#f9f9f9;}
+tr:nth-child(even){
+    background:#f9fbfc;
+}
 
 .dashboard{
-    margin-top:25px;
-    padding:20px;
-    background:white;
-    border-radius:10px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.05);
+    margin-top:30px;
+    padding:25px;
+    border-radius:12px;
+    background:var(--cinza-bg);
 }
 
 .progress-bar{
-    height:20px;
+    height:22px;
     background:#ddd;
-    border-radius:20px;
+    border-radius:30px;
     overflow:hidden;
     margin-top:10px;
 }
@@ -100,32 +116,25 @@ tr:nth-child(even){background:#f9f9f9;}
 .progress-fill{
     height:100%;
     width:0%;
-    background:var(--cor-sucesso);
-    transition:0.3s;
+    background:var(--verde);
+    transition:0.4s;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+    font-weight:600;
 }
 
 canvas{
     margin-top:20px;
 }
 
-/* Responsivo */
 @media(max-width:768px){
-    table, thead, tbody, th, td, tr{
-        display:block;
-    }
-
-    thead{display:none;}
-
-    tr{
-        margin-bottom:15px;
-        background:white;
-        padding:10px;
-        border-radius:8px;
-    }
-
-    td{
-        border:none;
-        padding:6px 0;
+    .stats{
+        flex-direction:column;
+        gap:8px;
     }
 }
 </style>
@@ -138,12 +147,12 @@ canvas{
 <h1 contenteditable>Treinamento Philips</h1>
 
 <div class="subinfo">
-<strong contenteditable>Vivere Consultoria</strong><br><br>
+<strong contenteditable>Vivere Consultoria</strong><br>
 Responsável: <span contenteditable>André Soares</span>
 </div>
 
-<div class="buttons">
-<button class="salvar" onclick="salvar()">💾 Salvar</button>
+<div class="actions">
+<button class="salvar" onclick="salvar()">💾 Salvar no Google</button>
 <button class="nova" onclick="novaLinha()">➕ Nova Linha</button>
 </div>
 
@@ -160,21 +169,25 @@ Responsável: <span contenteditable>André Soares</span>
 </table>
 
 <div class="dashboard">
-<strong>Progresso Médio: </strong><span id="media">0%</span><br>
-Total de Itens: <span id="total">0</span>
+
+<div class="stats">
+<span>Progresso Médio: <span id="media">0%</span></span>
+<span>Total de Itens: <span id="total">0</span></span>
+</div>
 
 <div class="progress-bar">
 <div class="progress-fill" id="barra"></div>
 </div>
 
 <canvas id="grafico"></canvas>
+
 </div>
 
 </div>
 
 <script>
 
-const URL_SCRIPT = "COLE_AQUI_SEU_WEBAPP";
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxpYpq64MHzA9UaDSF0tYE5EdF9H-t28tIhRN5m0Iy6t-Ucnecb6sCa7fOIpzamjN0RFg/exec";
 
 let chart;
 
@@ -231,15 +244,12 @@ function atualizarGrafico(media){
             }]
         },
         options:{
-            plugins:{
-                legend:{position:"bottom"}
-            }
+            plugins:{legend:{position:"bottom"}}
         }
     });
 }
 
 async function salvar(){
-    alert("Salvando...");
     try{
         let linhas=document.querySelectorAll("#tabela tbody tr");
         let dados=[];
@@ -256,14 +266,26 @@ async function salvar(){
             body:JSON.stringify(dados)
         });
 
-        alert("Salvo com sucesso ✅");
+        alert("Salvo no Google Drive ✅");
     }catch(e){
         alert("Erro ao salvar ❌");
     }
 }
 
+async function carregar(){
+    try{
+        let resposta=await fetch(URL_SCRIPT);
+        let dados=await resposta.json();
+        dados.forEach(d=>adicionarLinha(d));
+        calcular();
+    }catch{
+        novaLinha();
+        calcular();
+    }
+}
+
 document.addEventListener("input",calcular);
-calcular();
+window.onload=carregar;
 
 </script>
 
