@@ -1,294 +1,236 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Treinamento Philips</title>
+<title>Dashboard Treinamento Philips</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-<style>
-:root{
-  --azul:#0f5c74;
-  --azul-sec:#1f6f8b;
-  --verde:#28a745;
-  --cinza:#f4f6f9;
-}
 
 body{
-  font-family:'Segoe UI', Arial, sans-serif;
-  margin:0;
-  padding:30px;
-  background:linear-gradient(135deg,#0f5c74,#1f6f8b);
+font-family:Segoe UI;
+background:#f4f7fb;
+margin:0;
 }
 
-h1{
-  background:white;
-  color:var(--azul);
-  padding:18px;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+.header{
+background:#0f5c74;
+color:white;
+padding:20px;
+text-align:center;
 }
 
-.subinfo{
-  margin:20px 0;
-  padding:15px;
-  background:white;
-  border-radius:10px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+.container{
+max-width:1200px;
+margin:auto;
+padding:25px;
 }
 
-button{
-  padding:10px 18px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  margin-right:8px;
-  font-weight:600;
-  transition:0.2s;
+.kpis{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:30px;
 }
 
-button:nth-of-type(1){
-  background:var(--azul);
-  color:white;
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+text-align:center;
 }
 
-button:nth-of-type(2){
-  background:var(--verde);
-  color:white;
+.numero{
+font-size:28px;
+font-weight:bold;
+margin-top:5px;
 }
 
-button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 10px rgba(0,0,0,0.2);
+.table-box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+margin-bottom:30px;
 }
 
 table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+width:100%;
+border-collapse:collapse;
 }
 
 th{
-  background:var(--azul-sec);
-  color:white;
-  padding:12px;
+background:#1f6f8b;
+color:white;
+padding:10px;
+text-align:left;
 }
 
 td{
-  padding:12px;
-  border-bottom:1px solid #eee;
+padding:10px;
+border-bottom:1px solid #eee;
 }
 
-td[contenteditable]:focus{
-  outline:2px solid var(--azul-sec);
-  background:#eef7fb;
+.progress{
+height:10px;
+background:#e5e5e5;
+border-radius:5px;
+overflow:hidden;
 }
 
-tr:nth-child(even){
-  background:#fafafa;
+.bar{
+height:100%;
+background:#28a745;
+width:0%;
 }
 
-.dashboard{
-  margin-top:30px;
-  padding:20px;
-  border-radius:12px;
-  background:white;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.progress-bar{
-  height:22px;
-  background:#ddd;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:10px;
-}
-
-.progress-fill{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#28a745,#4cd964);
-  transition:0.4s;
-}
-
-@media(max-width:768px){
-  body{
-    padding:15px;
-  }
-
-  table, thead, tbody, th, td, tr{
-    display:block;
-  }
-
-  thead{display:none;}
-
-  tr{
-    margin-bottom:15px;
-    border-radius:10px;
-    padding:10px;
-  }
-
-  td{
-    border:none;
-  }
-}
 </style>
-</style>
+
 </head>
 
 <body>
 
+<div class="header">
+<h2>Dashboard Treinamento Philips</h2>
+</div>
+
 <div class="container">
 
-<h1 contenteditable>Treinamento Philips</h1>
+<div class="kpis">
 
-<div class="subinfo">
-<strong contenteditable>Vivere Consultoria</strong><br>
-Responsável: <span contenteditable>André Soares</span>
+<div class="card">
+Total de Atividades
+<div class="numero" id="total">0</div>
 </div>
 
-<div class="actions">
-<button class="salvar" onclick="salvar()">💾 Salvar no Google</button>
-<button class="nova" onclick="novaLinha()">➕ Nova Linha</button>
+<div class="card">
+Progresso Médio
+<div class="numero" id="media">0%</div>
 </div>
 
-<table id="tabela">
+<div class="card">
+Concluídas
+<div class="numero" id="concluidas">0</div>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table>
+
 <thead>
+
 <tr>
 <th>Descrição</th>
-<th>Progresso (%)</th>
+<th>Progresso</th>
 <th>Observação</th>
-<th>Ação</th>
 </tr>
+
 </thead>
-<tbody></tbody>
+
+<tbody id="tabela">
+
+</tbody>
+
 </table>
 
-<div class="dashboard">
-
-<div class="stats">
-<span>Progresso Médio: <span id="media">0%</span></span>
-<span>Total de Itens: <span id="total">0</span></span>
-</div>
-
-<div class="progress-bar">
-<div class="progress-fill" id="barra"></div>
 </div>
 
 <canvas id="grafico"></canvas>
 
 </div>
 
-</div>
-
 <script>
 
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxpYpq64MHzA9UaDSF0tYE5EdF9H-t28tIhRN5m0Iy6t-Ucnecb6sCa7fOIpzamjN0RFg/exec";
+const URL="https://script.google.com/macros/s/AKfycbzjCviMj0nCnVAeMB_lMf_QrEp-1QnW0LrsUtu1UwFg7fVKJw0Xqk_aEKVf2gpYf8cyMA/exec";
 
-let chart;
-
-function adicionarLinha(dados={descricao:"",progresso:0,observacao:""}){
-    let tr=document.createElement("tr");
-    tr.innerHTML=`
-        <td contenteditable>${dados.descricao}</td>
-        <td contenteditable>${dados.progresso}</td>
-        <td contenteditable>${dados.observacao}</td>
-        <td><button onclick="removerLinha(this)">❌</button></td>
-    `;
-    document.querySelector("#tabela tbody").appendChild(tr);
-}
-
-function removerLinha(btn){
-    btn.closest("tr").remove();
-    calcular();
-}
-
-function novaLinha(){
-    adicionarLinha();
-}
-
-function calcular(){
-    let linhas=document.querySelectorAll("#tabela tbody tr");
-    let total=linhas.length;
-    let soma=0;
-
-    linhas.forEach(l=>{
-        let prog=parseFloat(l.cells[1].innerText)||0;
-        prog=Math.max(0,Math.min(100,prog));
-        soma+=prog;
-    });
-
-    let media=total?Math.round(soma/total):0;
-
-    document.getElementById("total").innerText=total;
-    document.getElementById("media").innerText=media+"%";
-    document.getElementById("barra").style.width=media+"%";
-
-    atualizarGrafico(media);
-}
-
-function atualizarGrafico(media){
-    if(chart) chart.destroy();
-
-    chart=new Chart(document.getElementById("grafico"),{
-        type:"doughnut",
-        data:{
-            labels:["Concluído","Restante"],
-            datasets:[{
-                data:[media,100-media],
-                backgroundColor:["#28a745","#ddd"]
-            }]
-        },
-        options:{
-            plugins:{legend:{position:"bottom"}}
-        }
-    });
-}
-
-async function salvar(){
-    try{
-        let linhas=document.querySelectorAll("#tabela tbody tr");
-        let dados=[];
-        linhas.forEach(l=>{
-            dados.push({
-                descricao:l.cells[0].innerText,
-                progresso:l.cells[1].innerText,
-                observacao:l.cells[2].innerText
-            });
-        });
-
-        await fetch(URL_SCRIPT,{
-            method:"POST",
-            body:JSON.stringify(dados)
-        });
-
-        alert("Salvo no Google Drive ✅");
-    }catch(e){
-        alert("Erro ao salvar ❌");
-    }
-}
+let grafico;
 
 async function carregar(){
-    try{
-        let resposta=await fetch(URL_SCRIPT);
-        let dados=await resposta.json();
-        dados.forEach(d=>adicionarLinha(d));
-        calcular();
-    }catch{
-        novaLinha();
-        calcular();
-    }
+
+let resposta=await fetch(URL);
+let dados=await resposta.json();
+
+let tabela=document.getElementById("tabela");
+
+tabela.innerHTML="";
+
+let total=0;
+let soma=0;
+let concluidas=0;
+
+dados.forEach(linha=>{
+
+let progresso=parseFloat(linha.progresso)||0;
+
+if(progresso<=1) progresso*=100;
+
+progresso=Math.round(progresso);
+
+total++;
+soma+=progresso;
+
+if(progresso==100) concluidas++;
+
+let tr=document.createElement("tr");
+
+tr.innerHTML=`
+
+<td>${linha.descricao}</td>
+
+<td>
+
+${progresso}%
+
+<div class="progress">
+<div class="bar" style="width:${progresso}%"></div>
+</div>
+
+</td>
+
+<td>${linha.observacao || ""}</td>
+
+`;
+
+tabela.appendChild(tr);
+
+});
+
+let media=Math.round(soma/total);
+
+document.getElementById("total").innerText=total;
+document.getElementById("media").innerText=media+"%";
+document.getElementById("concluidas").innerText=concluidas;
+
+if(grafico) grafico.destroy();
+
+grafico=new Chart(document.getElementById("grafico"),{
+
+type:"doughnut",
+
+data:{
+labels:["Concluídas","Pendentes"],
+datasets:[{
+data:[concluidas,total-concluidas],
+backgroundColor:["#28a745","#ffc107"]
+}]
+},
+
+options:{
+plugins:{legend:{position:"bottom"}}
 }
 
-document.addEventListener("input",calcular);
-window.onload=carregar;
+});
+
+}
+
+carregar();
+
+setInterval(carregar,30000);
 
 </script>
 
